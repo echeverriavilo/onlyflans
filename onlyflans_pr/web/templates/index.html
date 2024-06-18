@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Nuestros productos</h2>
+    <div class="row">
+        {% for flan in flanes %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ flan.image_url }}" class="card-img-top" alt="{{ flan.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ flan.name }}</h5>
+                    <p class="card-text text-indigo">{{ flan.description }}</p>
+                    {% if flan.sin_azucar %}
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-check-circle"></i> Este flan se puede pedir sin azúcar.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

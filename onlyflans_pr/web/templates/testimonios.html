@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %} 
+    <h2 class="text-center">Nuestros clientes opinan:</h2>
+
+    {% for testimonio in page_obj %}
+    <div class="d-flex justify-content-center">
+        <div class="card mb-3 bg-indigo text-white " style="max-width: 650px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="{% static 'img/user-icon.png' %}" class="img-fluid rounded-start" alt="Icono de usuario">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card title">{{ testimonio.usuario.username }}:</h5>
+                        <p class="card-text">{{ testimonio.testimonio }}</p>
+                        <p class="card-text"><small class="text-body-secondary">Calificación: {{ testimonio.calificacion }}/5</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% comment %} Versión final del paginador que si funciona:  {% endcomment %}
+    <nav aria-label="Paginación de testimonios">
+        <ul class="pagination justify-content-center"> 
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Anterior</span> 
+                </li>
+            {% endif %}
+    
+            {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endfor %}
+    
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Siguiente</span>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% if user.is_authenticated %}
+    <h3 class="text-center">Tu opinión nos interesa:</h3>
+    <div class="container mt-4 mb-3">
+        <div class="d-flex justify-content-center">
+            <form method="post" class="form">
+                {% csrf_token %}
+                <div class="col-10">
+                    {{ form.testimonio.label_tag }}
+                    {{ form.testimonio }}
+                </div>
+                <div class="mb-3">
+                    {{ form.calificacion.label_tag }}
+                    {{ form.calificacion }}
+                </div>
+                <button type="submit" class="btn btn-primary text-center">Enviar testimonio</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="d-flex justify-content-center mb-5">
+        <a href="{% url 'login' %}" class="btn btn-primary mt-4">Inicia sesión para dejar tu testimonio</a>
+    </div>
+    {% endif %}
+      
+{% endblock %}

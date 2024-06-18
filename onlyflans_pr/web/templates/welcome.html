@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container">
+    <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+        <div class="col-md-6 px-0">
+            <h1 class="display-4 fst-italic"> Bienvenido, {{ user.username }} </h1>
+            <p class="lead my-3 text-indigo"> Tenemos una exclusiva selección de produtos para ti:</p>
+        </div>
+    </div>
+<div class="row">
+    {% for flan in flanes %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="{{ flan.image_url }}" class="card-img-top" alt="{{ flan.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ flan.name }}</h5>
+                <p class="card-text text-indigo">{{ flan.description }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
